@@ -3,6 +3,7 @@ const {configs, countries, setConfig, getConfig} = require('./config');
 const {buildDriver} = require('./chromeDriver');
 const {selectors} = require('./selectors');
 const {sleep, setChatId, sendMessage, selectChoice, collectInput, yesOrNoQuestion} = require("./helpers");
+const { exec } = require('child_process');
 
 /**
  *
@@ -28,6 +29,10 @@ async function retryActionOnAnElement(selector, numberOfRetries = 10, retrialTim
     }
 }
 
+function beep() {
+    exec('afplay beep.wav')
+}
+
 async function retryFindingAppointment() {
     // the session is 30 minutes
     let sessionInterval = 3600000;
@@ -38,6 +43,7 @@ async function retryFindingAppointment() {
             await sleep(2000);
             if (await checkAvailableAppointment()) {
                 console.log('Found an Appointment 🎉🎉🎉');
+                beep();
                 await sleep(2000);
                 await sendMessage(await driver.getCurrentUrl());
                 return;
@@ -58,7 +64,6 @@ async function checkAvailableAppointment() {
 
 async function prepareUserData() {
     await collectUserData()
-    await setChatId()
     await sendMessage('starting');
 }
 
@@ -91,23 +96,17 @@ async function start() {
 }
 
 async function collectUserData() {
-    const nationality = await selectChoice('What is your nationality?', Object.keys(countries));
-    setConfig(configs.NATIONALITY_ID, countries[nationality])
-    setConfig(configs.NUMBER_OF_PERSONS, await selectChoice('what is the number of persons applying?', ['1', '2', '3', '4', '5', '6', '7', '8']))
-    const doYouLiveWithYourFamily = await yesOrNoQuestion('Do You Live With Your Family?');
+
+    setConfig(configs.NATIONALITY_ID, "348")
+    setConfig(configs.NUMBER_OF_PERSONS, '1')
+    const doYouLiveWithYourFamily = false;
     setConfig(configs.DO_YOU_LIVE_WITH_YOUR_FAMILY, doYouLiveWithYourFamily)
     if (doYouLiveWithYourFamily) {
         const spouseNationality = await selectChoice('What is your Spouse nationality?', Object.keys(countries));
         setConfig(configs.SPOUSE_NATIONALITY_ID, countries[spouseNationality])
     }
-    console.log(`Now getting to telegram token collection
-    go to  https://web.telegram.org/ and search for botFather, click on it.
-    send /newbot in the chat, it will ask you about the bot user name, choose something like 'blue_card_appointment_finder_bot' and hit enter.
-    the bot will be created and you will get the token, copy the token and go to the search again and enter the bot name i.e. 'blue_card_appointment_finder_bot' and click start
-    enter the token in the following prompt.
-    `);
-    const telegramToken = await collectInput('What is your telegram token?');
-    setConfig(configs.TELEGRAM_CHAT_BOT_TOKEN, telegramToken)
+    // const telegramToken = await collectInput('What is your telegram token?');
+    // setConfig(configs.TELEGRAM_CHAT_BOT_TOKEN, telegramToken)
 }
 
 async function main() {

@@ -20,14 +20,7 @@ exports.setChatId = async () => {
 }
 
 exports.sendMessage = async (text) => {
-    await request.post(`https://api.telegram.org/bot${getConfig(configs.TELEGRAM_CHAT_BOT_TOKEN)}/sendMessage`,
-        {
-            body: {
-                "chat_id": chatId,
-                text
-            },
-            json: true
-        })
+    console.log(text)
 }
 
 exports.selectChoice = async (message, choices) => {
