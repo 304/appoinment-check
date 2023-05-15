@@ -39,6 +39,9 @@ async function retryFindingAppointment() {
     while (((new Date() - sessionStart)/sessionInterval) < 0.5) {
         console.log('time elapsed: ', ((new Date() - sessionStart)/sessionInterval) * 60);
         try {
+            await retryActionOnAnElement(selectors.otherEmploymentReason, 10, 3);
+            await retryActionOnAnElement(selectors.employmentReason, 10, 3);
+            await retryActionOnAnElement(selectors.blueCard);
             await retryActionOnAnElement(selectors.findAppointmentButton, 10, 5);
             await sleep(2000);
             if (await checkAvailableAppointment()) {

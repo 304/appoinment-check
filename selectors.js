@@ -8,8 +8,9 @@ exports.selectors = {
     doYouLiveWithYourFamilySelector: (answer) => answer ? '//*[@id="xi-sel-427_1"]' : '//*[@id="xi-sel-427_2"]',
     familyMemberNationality: (nationalityId) => `//*[@id="xi-sel-428"]/option[contains(@value,${nationalityId})]`,
     residencePermitOption: '//*[@id="xi-div-30"]/div[1]/label',
-    employmentReason: '//*[@id="xi-div-30"]/div[5]/div[1]/div[3]/label',
-    blueCard: '//*[@id="xi-div-30"]/div[5]/div[1]/div[4]/div/div[last()]/label',
+    employmentReason: '//*[@id="inner-348-0-1"]/div[1]/div[3]/label',
+    blueCard: '//*[@id="inner-348-0-1"]/div[1]/div[4]/div/div[last()]/label',
+    otherEmploymentReason: '//*[@id="inner-348-0-1"]/div[1]/div[1]/label',
     findAppointmentButton: '//*[@id="applicationForm:managedForm:proceed"]',
     currentActiveStep: '//*[@class="antcl_active"]'
 }
