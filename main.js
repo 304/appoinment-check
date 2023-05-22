@@ -62,7 +62,8 @@ async function retryFindingAppointment() {
 async function checkAvailableAppointment() {
     const activeStep = await retryActionOnAnElement(selectors.currentActiveStep, 10, 2, 'getText');
     console.log('active step is: ', activeStep);
-    return (!(activeStep.indexOf('Servicewahl') > -1 || activeStep.indexOf('2') > -1)) && ((activeStep.indexOf('Terminauswahl') > -1 || activeStep.indexOf('3') > -1));
+
+    return activeStep == '3'
 }
 
 async function prepareUserData() {
