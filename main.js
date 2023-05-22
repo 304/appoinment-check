@@ -39,6 +39,13 @@ async function retryFindingAppointment() {
     while (((new Date() - sessionStart)/sessionInterval) < 0.5) {
         console.log('time elapsed: ', ((new Date() - sessionStart)/sessionInterval) * 60);
         try {
+            if (await checkAvailableAppointment()) {
+                console.log('Found an Appointment 🎉🎉🎉');
+                beep();
+                await sleep(2000);
+                await sendMessage(await driver.getCurrentUrl());
+                return;
+            }
             await retryActionOnAnElement(selectors.otherEmploymentReason, 10, 3);
             await retryActionOnAnElement(selectors.employmentReason, 10, 3);
             await retryActionOnAnElement(selectors.blueCard);
